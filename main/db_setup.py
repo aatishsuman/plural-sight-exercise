@@ -13,13 +13,15 @@ import pandas as pd
 
 class DBSetup:
     def __init__(self):
-        self.SERVER_CONFIG = 'server.ini'
-        self.DATABASE_CONFIG = 'database.ini'
-        self.DB = 'pluralsight'
-        self.DATA_URL = 'https://raw.githubusercontent.com/aatishsuman/plural-sight-exercise/master/data/'
+        self.SERVER_CONFIG = 'server.ini' # file containing the server credentials
+        self.DATABASE_CONFIG = 'database.ini' # file containing the database credentials
+        self.DB = 'pluralsight' # name of the database
+        self.DATA_URL = 'https://raw.githubusercontent.com/aatishsuman/plural-sight-exercise/master/data/' # github URL user data is stored
         self.FILE_NAMES = ['course_tags', 'user_assessment_scores', 'user_course_views', 'user_interests']
     
     def get_config(self, filename, section='postgresql'):
+        '''Reads the DB params from the disk'''
+        
         parser = ConfigParser()
         parser.read(filename)
         db_params = {}
@@ -32,6 +34,8 @@ class DBSetup:
         return db_params
     
     def create_database(self):
+        '''Creates the DB'''
+        
         conn = None
         try:
             params = self.get_config(self.SERVER_CONFIG)
@@ -52,6 +56,8 @@ class DBSetup:
                 print('Database connection closed.')
     
     def create_tables(self):
+        '''Creates the user data tables'''
+        
         engine = None
         try:
             params = self.get_config(self.DATABASE_CONFIG)
